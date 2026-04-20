@@ -1,0 +1,73 @@
+.theme-switch {
+  position: relative;
+  display: inline-flex;
+  width: 52px;
+  height: 28px;
+  cursor: pointer;
+  flex-shrink: 0;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.theme-switch-slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  transition: background 220ms ease, border-color 220ms ease;
+}
+
+.theme-switch--dark .theme-switch-slider {
+  background: #303d66;
+  border-color: #4b5b8a;
+}
+
+.slider-circle {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  transition: transform 240ms cubic-bezier(0.3, 0.85, 0.45, 1), background 220ms ease;
+}
+
+.theme-switch--dark .slider-circle {
+  transform: translateX(24px);
+  background: #e8ecff;
+}
+
+.theme-icon {
+  width: 13px;
+  height: 13px;
+  position: absolute;
+  transition: opacity 220ms ease;
+}
+
+.sun-icon {
+  opacity: 1;
+  transform: none;
+  stroke: #f59e0b;
+}
+
+.moon-icon {
+  opacity: 0;
+  transform: none;
+  stroke: #1f2d50;
+}
+
+.theme-switch--dark .sun-icon {
+  opacity: 0;
+  transform: none;
+}
+
+.theme-switch--dark .moon-icon {
+  opacity: 1;
+  transform: none;
+}

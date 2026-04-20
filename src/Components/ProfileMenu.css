@@ -1,0 +1,170 @@
+.profile-container {
+  position: relative;
+}
+
+.profile-btn {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mobile-search-toggle {
+  display: none;
+}
+
+.fullscreen-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0;
+}
+
+.fullscreen-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fullscreen-toggle:hover,
+.fullscreen-toggle.is-active {
+  background: var(--feature-hover);
+}
+
+.avatar-img,
+.avatar-fallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+}
+
+.avatar-fallback {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--avatar-grad-start), var(--avatar-grad-end));
+  color: var(--avatar-text);
+  font-size: 20px;
+  font-weight: 700;
+  transition: background 220ms ease, color 220ms ease;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(280px, calc(100vw - 24px));
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--dropdown-bg);
+  padding: 10px;
+  box-shadow: 0 12px 24px rgba(36, 41, 76, 0.15);
+  z-index: 10;
+  transition: background-color 220ms ease, border-color 220ms ease;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transform-origin: top right;
+  animation: profileMenuBounce 280ms ease-out;
+}
+
+.dropdown-username {
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.25;
+  padding: 10px 12px 8px;
+}
+
+.dropdown-section-label {
+  padding: 10px 12px 2px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.dropdown-detail {
+  padding: 0 12px 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-heading-muted);
+  word-break: break-word;
+}
+
+.dropdown-detail-calendar-status {
+  margin-top: -2px;
+  padding-bottom: 8px;
+}
+
+.dropdown-item {
+  border: 0;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: var(--dropdown-hover);
+}
+
+.dropdown-item:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.theme-item {
+  min-height: 42px;
+  line-height: 1.2;
+  font-weight: 500;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.theme-item .theme-switch {
+  flex: 0 0 52px;
+}
+
+.profile-logout-separator {
+  height: 1px;
+  margin: 2px 8px 4px;
+  background: var(--card-border, #e2e8f0);
+}
+
+.logout {
+  color: var(--danger);
+  margin-top: 4px;
+}
+
+@keyframes profileMenuBounce {
+  0% {
+    transform: scale(0.765);
+    border-radius: 28px;
+    opacity: 0;
+  }
+
+  38% {
+    transform: scale(1.043);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

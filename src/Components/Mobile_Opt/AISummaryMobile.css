@@ -1,0 +1,15 @@
+/* Mobile and tablet styles extracted from AISummary.css */
+
+@media (max-width: 560px) {
+  .note-ai-prompt-row {
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .note-ai-send-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Mobile */

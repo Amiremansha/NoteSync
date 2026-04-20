@@ -1,0 +1,17 @@
+/* Mobile and tablet styles extracted from SignUp.css */
+
+@media (max-width: 900px) {
+  .auth-container {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-left {
+    display: none;
+  }
+
+  .form-box {
+    width: 92%;
+  }
+}
+
+/* Mobile */

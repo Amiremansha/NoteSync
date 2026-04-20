@@ -1,0 +1,93 @@
+/* ─── Card expansion transition ──────────────────────── */
+.note-card {
+  --source-radius: 8px;
+  --border-scale-x: 1;
+  --border-scale-y: 1;
+  border-radius:
+    calc(var(--source-radius) * var(--border-scale-x))
+    /
+    calc(var(--source-radius) * var(--border-scale-y));
+  backface-visibility: hidden;
+  transform: translate3d(0px, 0px, 0px) scale(1, 1);
+  transform-origin: center center;
+  transition:
+    transform var(--card-duration, 430ms) var(--card-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-radius var(--card-duration, 430ms) var(--card-easing, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.note-card.expanded {
+  position: fixed;
+  z-index: 1000;
+  margin: 0;
+  padding: 0;
+  border-color: var(--card-border, #e2e8f0);
+  overflow: hidden;
+  box-shadow: none;
+  cursor: default;
+  isolation: isolate;
+  will-change: transform;
+}
+
+/* ─── Expanded layer crossfade ───────────────────────── */
+.card-expanded.fade-in {
+  opacity: 0;
+  animation:
+    expandedFadeIn calc(var(--card-duration, 430ms) * 0.78)
+    cubic-bezier(0.2, 0, 0.1, 1)
+    calc(var(--card-duration, 430ms) * 0.34)
+    forwards;
+}
+
+/* OPEN only: reveal expanded UI later so scaled/squished interim frame is never shown */
+.card-expanded.fade-in-open {
+  opacity: 0;
+  animation:
+    expandedFadeIn calc(var(--card-duration, 430ms) * 0.52)
+    cubic-bezier(0.2, 0, 0.1, 1)
+    calc(var(--card-duration, 430ms) * 0.14)
+    forwards;
+}
+
+.card-expanded.fade-out {
+  opacity: 1;
+  pointer-events: none;
+  animation:
+    expandedFadeOut calc(var(--card-duration, 430ms) * 0.34)
+    var(--card-easing, cubic-bezier(0.55, 0.06, 0.68, 0.19))
+    forwards;
+}
+
+/* ─── Overlay ────────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 900;
+  animation: overlayIn calc(var(--card-duration, 430ms) * 0.76) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: auto;
+}
+
+.overlay.closing {
+  animation: overlayOut calc(var(--card-duration, 430ms) * 0.6) var(--card-easing, cubic-bezier(0.55, 0.06, 0.68, 0.19)) forwards;
+}
+
+/* ─── Keyframes ──────────────────────────────────────── */
+@keyframes expandedFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes expandedFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes overlayOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

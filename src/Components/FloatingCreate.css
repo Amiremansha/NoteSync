@@ -1,0 +1,376 @@
+.create-note-wrapper {
+  --main-size: 94px;
+  --fab-right: 20px;
+  --fab-bottom: 18px;
+
+  position: fixed;
+  right: calc(var(--fab-right) + env(safe-area-inset-right));
+  bottom: calc(var(--fab-bottom) + env(safe-area-inset-bottom));
+  width: var(--main-size);
+  height: var(--main-size);
+  z-index: 880;
+  pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Hide FAB while it's morphing — the flying card IS the icon at that moment */
+.create-main-btn.fab-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.create-main-btn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--main-size);
+  height: var(--main-size);
+  border: 1px solid var(--fab-main-border);
+  border-radius: 999px;
+  cursor: pointer;
+  pointer-events: auto;
+  background: var(--fab-main-bg);
+  color: var(--fab-main-fg);
+  box-shadow: var(--fab-main-shadow);
+  display: grid;
+  place-items: center;
+
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.create-main-btn svg {
+  width: 32px;
+  height: 32px;
+}
+
+.fc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 900;
+  animation: fcOverlayIn calc(var(--card-duration, 430ms) * 0.76) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: auto;
+  will-change: opacity;
+}
+
+.fc-overlay.closing {
+  animation: fcOverlayOut calc(var(--card-duration, 430ms) * 0.6) cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+@keyframes fcOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fcOverlayOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Flying card — the morphing surface that blooms from the icon.
+   Needs a real background + shadow so it's actually visible.
+   border-radius is driven inline by cardStyle from the engine.
+───────────────────────────────────────────────────────────── */
+.fab-flying-card {
+  /* Card surface */
+  background: var(--card-bg, #ffffff);
+  box-shadow: var(--card-shadow, 0 8px 40px rgba(0, 0, 0, 0.14));
+
+  /* Clip content to the animated border-radius at every frame */
+  overflow: hidden;
+
+  /* Smooth the morphing — engine sets duration via --card-duration */
+  transform-origin: top left;
+  transform: translate3d(0px, 0px, 0px) scale(1, 1);
+  transition:
+    transform var(--card-duration, 500ms) var(--card-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-radius var(--card-duration, 500ms) var(--card-easing, cubic-bezier(0.22, 1, 0.36, 1));
+
+  will-change: transform, border-radius;
+}
+
+/* ─── NewNoteCard — matches expanded card UI ─── */
+
+.new-note-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 18px 20px 16px;
+  box-sizing: border-box;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.new-note-card,
+.new-note-card * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.new-note-card.is-leaving {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+/* Top row: reminder */
+.nnc-top-row {
+  display: none;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 14px;
+}
+
+.nnc-reminder-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nnc-reminder-trigger {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.nnc-reminder-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  color: var(--text-muted, #94a3b8);
+  opacity: 0.9;
+}
+
+.nnc-date-input-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  opacity: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.nnc-date-input-overlay::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.nnc-date-input-overlay::-webkit-inner-spin-button,
+.nnc-date-input-overlay::-webkit-clear-button {
+  display: none;
+}
+
+.nnc-error {
+  margin-left: 12px;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Title — large bold matching card header */
+.nnc-header-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text-primary, #1e293b);
+  caret-color: #000000;
+  padding: 0;
+  margin-bottom: 14px;
+  width: 100%;
+  letter-spacing: -0.3px;
+}
+
+.nnc-header-input::placeholder { color: var(--text-muted, #94a3b8); }
+
+/* Full-width divider */
+.nnc-divider {
+  height: 1px;
+  background: var(--card-border, #e2e8f0);
+  margin: 0 0 14px;
+  flex-shrink: 0;
+}
+
+/* Body */
+.nnc-body-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary, #475569);
+  caret-color: #000000;
+  padding: 0;
+  width: 100%;
+}
+
+.nnc-body-input::placeholder { color: var(--text-muted, #94a3b8); }
+
+:root[data-theme="dark"] .nnc-date-input-overlay,
+:root[data-theme="dark"] .nnc-header-input,
+:root[data-theme="dark"] .nnc-body-input {
+  caret-color: #ffffff;
+}
+
+.nnc-image-preview {
+  margin: 12px 0 4px;
+  border: 1px solid var(--card-border, #e2e8f0);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.nnc-image-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: cover;
+}
+
+/* Actions */
+.nnc-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--card-border, #e2e8f0);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.nnc-actions-left,
+.nnc-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nnc-btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: opacity 140ms ease, transform 120ms ease, background 140ms ease;
+}
+
+.nnc-btn:active { transform: scale(0.96); }
+
+.nnc-btn-discard {
+  padding: 9px 18px;
+  min-height: 38px;
+  min-width: 92px;
+  border-radius: 10px;
+  border: 1px solid var(--btn-close-border);
+  background: var(--btn-close-bg);
+  color: var(--btn-close-txt);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 280ms ease, color 280ms ease, border-color 280ms ease;
+}
+
+.nnc-btn-discard:hover { 
+  background: var(--btn-close-bg-hover); 
+  color: var(--btn-close-hover-txt);
+  border-color: var(--btn-close-border-hover);
+
+}
+
+.nnc-btn-save {
+  padding: 9px 22px;
+  min-height: 38px;
+  min-width: 96px;
+  border-radius: 10px;
+  border: 1px solid var(--btn-save-border);
+  background: var(--btn-save-bg);
+  color: var(--btn-save-txt);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 280ms ease, color 280ms ease, border-color 280ms ease;
+}
+
+.nnc-btn-save:hover {
+  background: var(--btn-save-bg-hover);
+  color: var(--btn-save-hover-txt);
+  border-color: var(--btn-save-border-hover);
+}
+
+.nnc-btn-save:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.nnc-upload-input {
+  display: none;
+}
+
+.nnc-btn-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 136px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--btn-upload-border, var(--btn-save-border));
+  background: var(--btn-upload-bg, var(--btn-save-bg));
+  color: var(--btn-upload-fg, var(--btn-save-fg));
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease, transform 120ms ease;
+}
+
+.nnc-btn-upload:hover {
+  background: var(--btn-upload-bg-hover, var(--btn-save-bg-hover));
+  color: var(--btn-upload-hover-txt, #ffffff);
+  border-color: var(--btn-upload-border-hover, var(--btn-save-border-hover));
+}
+
+.nnc-btn-upload:active {
+  transform: scale(0.97);
+}
+
+.nnc-btn-upload svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  fill: none;
+}

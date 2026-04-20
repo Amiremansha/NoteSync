@@ -1,0 +1,100 @@
+/* Mobile and tablet styles extracted from FloatingCreate.css */
+
+@media (max-width: 1024px) {
+  .nnc-top-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .nnc-reminder-input-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nnc-error {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .create-note-wrapper {
+    --main-size: 86px;
+  }
+}
+
+@media (max-width: 860px) {
+  .nnc-actions {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nnc-actions-left,
+  .nnc-actions-right {
+    min-width: 0;
+    width: auto;
+  }
+
+  .nnc-actions-left {
+    flex: 1 1 auto;
+  }
+
+  .nnc-actions-right {
+    flex: 0 0 auto;
+    margin-left: auto;
+    gap: 8px;
+  }
+
+  .nnc-btn-upload {
+    width: auto;
+    min-width: 0;
+    height: 34px;
+    padding: 0 10px;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .nnc-btn-upload svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .nnc-btn-discard,
+  .nnc-btn-save {
+    min-width: 0;
+    min-height: 34px;
+    height: 34px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  .create-note-wrapper {
+    --main-size: 72px;
+    --fab-right: 12px;
+    --fab-bottom: 12px;
+  }
+
+  .nnc-actions {
+    gap: 6px;
+  }
+
+  .nnc-actions-right {
+    gap: 6px;
+  }
+
+  .nnc-btn-upload {
+    padding: 0 8px;
+  }
+
+  .nnc-btn-discard,
+  .nnc-btn-save {
+    padding: 0 10px;
+  }
+}
+
+/* Mobile */

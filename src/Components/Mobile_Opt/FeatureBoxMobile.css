@@ -1,0 +1,79 @@
+/* Mobile and tablet styles extracted from FeatureBox.css */
+
+@media (max-width: 1200px) {
+  .feature-item,
+  .tag-item {
+    font-size: 16px;
+    padding: 10px 12px;
+  }
+
+  .feature-icon,
+  .tag-svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 560px), (orientation: portrait) and (min-width: 561px) and (max-width: 1024px) {
+  .feature-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+    margin: 0;
+  }
+
+  .feature-item,
+  .tag-item,
+  .tag-title {
+    width: 100%;
+    min-width: 38px;
+    min-height: 38px;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
+
+  .tag-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .tag-divider {
+    display: block;
+    width: 100%;
+    margin: 4px 0 8px;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 560px) {
+  .feature-label,
+  .tag-text {
+    display: inline-block;
+    margin: 0;
+    white-space: nowrap;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 860px), (orientation: portrait) and (max-width: 1024px) {
+  /* When quick-actions button is available in the header, keep labels visible. */
+  .feature-label,
+  .tag-text {
+    opacity: 1;
+  }
+}
+
+/* Mobile */

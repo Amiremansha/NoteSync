@@ -1,0 +1,9 @@
+/* Mobile and tablet styles extracted from CardExpansionAnimation.css */
+
+@media (max-width: 560px) {
+  .note-card.expanded .card-collapsed {
+    padding: 14px 14px 12px;
+  }
+}
+
+
