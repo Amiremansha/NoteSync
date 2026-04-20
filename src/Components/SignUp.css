@@ -91,6 +91,12 @@
 
 .password-field{
   position: relative;
+  z-index: 2;
+}
+
+.password-field:hover,
+.password-field:focus-within{
+  z-index: 20;
 }
 
 .password-input-wrap{
@@ -101,11 +107,63 @@
 
 .password-input{
   width: 100%;
+  padding-right: 38px;
+}
+
+.confirm-password-input{
+  padding-right: 50px;
+}
+
+.password-actions{
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.password-actions-single{
+  gap: 0;
+}
+
+.password-visibility-btn{
+  border: none;
+  background: transparent;
+  color: var(--auth-text);
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+  flex-shrink: 0;
+}
+
+.password-visibility-btn:hover,
+.password-visibility-btn:focus-visible{
+  outline: none;
+  background: rgba(11, 39, 64, 0.08);
+}
+
+[data-theme="dark"] .password-visibility-btn:hover,
+[data-theme="dark"] .password-visibility-btn:focus-visible{
+  background: rgba(168, 181, 228, 0.14);
+}
+
+.password-eye-icon{
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
 }
 
 .password-help{
   position: absolute;
-  right: -38px;
+  right: -48px;
   top: 50%;
   transform: translateY(-50%);
   display: inline-flex;
@@ -145,8 +203,8 @@
 
 .password-tooltip{
   position: absolute;
-  right: 0;
-  top: calc(100% + 10px);
+  right: -10px;
+  top: calc(100% + 12px);
   width: min(320px, 78vw);
   border: 1px solid var(--auth-border);
   border-radius: 10px;
@@ -159,7 +217,7 @@
   transform: translateY(-6px);
   transition: opacity 180ms ease, visibility 180ms ease, transform 180ms ease;
   pointer-events: none;
-  z-index: 5;
+  z-index: 200;
 }
 
 .password-help:hover .password-tooltip,
