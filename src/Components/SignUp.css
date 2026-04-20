@@ -107,16 +107,16 @@
 
 .password-input{
   width: 100%;
-  padding-right: 38px;
+  padding-right: 49px;
 }
 
 .confirm-password-input{
-  padding-right: 50px;
+  padding-right: 49px;
 }
 
 .password-actions{
   position: absolute;
-  right: 4px;
+  right: 11px;
   top: 50%;
   transform: translateY(-50%);
   display: inline-flex;
