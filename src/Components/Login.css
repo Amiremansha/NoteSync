@@ -179,52 +179,6 @@
   gap: 6px;
 }
 
-.password-input-wrap {
-  position: relative;
-  width: 100%;
-}
-
-.password-row .password-input {
-  width: 100%;
-  padding-right: 49px;
-}
-
-.password-row .password-input-wrap > .password-visibility-btn {
-  position: absolute;
-  right: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  color: var(--auth-text);
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease;
-}
-
-.password-row .password-input-wrap > .password-visibility-btn:hover,
-.password-row .password-input-wrap > .password-visibility-btn:focus-visible {
-  outline: none;
-  background: rgba(11, 39, 64, 0.08);
-}
-
-.password-eye-icon {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
-}
-
-[data-theme="dark"] .password-row .password-input-wrap > .password-visibility-btn:hover,
-[data-theme="dark"] .password-row .password-input-wrap > .password-visibility-btn:focus-visible {
-  background: rgba(168, 181, 228, 0.14);
-}
-
 /* FORGOT PASSWORD */
 .forgot {
   font-size: 14px;

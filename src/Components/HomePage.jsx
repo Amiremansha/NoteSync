@@ -16,6 +16,52 @@ import "./HomePage.css";
 import "./Mobile_Opt/HomePageMobile.css";
 import FloatingCreate from "./FloatingCreate.jsx";
 
+const pickFirstNonEmpty = (...values) =>
+  values.find((value) => typeof value === "string" && value.trim().length > 0)?.trim() || "";
+
+const getEmailLocalPart = (email) => {
+  if (typeof email !== "string") return "";
+  return email.split("@")[0]?.trim() || "";
+};
+
+const getIdentityDataByProvider = (user, providerName) => {
+  const identities = Array.isArray(user?.identities) ? user.identities : [];
+  const target = identities.find((identity) => identity?.provider === providerName);
+  return target?.identity_data ?? {};
+};
+
+const getUserDisplayName = (user) => {
+  if (!user) return "";
+
+  const metadata = user.user_metadata ?? {};
+  const googleIdentity = getIdentityDataByProvider(user, "google");
+
+  return pickFirstNonEmpty(
+    googleIdentity.full_name,
+    googleIdentity.name,
+    metadata.full_name,
+    metadata.name,
+    getEmailLocalPart(googleIdentity.email),
+    getEmailLocalPart(user.email),
+    metadata.display_name,
+    metadata.preferred_username
+  );
+};
+
+const getUserAvatarUrl = (user) => {
+  if (!user) return "";
+
+  const metadata = user.user_metadata ?? {};
+  const googleIdentity = getIdentityDataByProvider(user, "google");
+
+  return pickFirstNonEmpty(
+    googleIdentity.avatar_url,
+    googleIdentity.picture,
+    metadata.avatar_url,
+    metadata.picture
+  );
+};
+
 
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -291,26 +337,51 @@ export default function HomePage() {
   }, [getFreshAccessToken]);
 
   useEffect(() => {
+    let isMounted = true;
+
+    const applyAuthenticatedUser = async (user, options = {}) => {
+      const { syncIntegrations = false } = options;
+      if (!isMounted || !user) return;
+
+      setUsername(getUserDisplayName(user));
+      setAvatarUrl(getUserAvatarUrl(user));
+
+      if (syncIntegrations) {
+        await ensurePushNotifications();
+        await checkGoogleCalendarStatus();
+      }
+    };
+
     const getUser = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
       if (user) {
-        setUsername(user.user_metadata.display_name || "");
-
-        if (user.user_metadata.avatar_url) {
-          setAvatarUrl(user.user_metadata.avatar_url);
-        }
-
-        await ensurePushNotifications();
-        await checkGoogleCalendarStatus();
+        await applyAuthenticatedUser(user, { syncIntegrations: true });
       } else {
         navigate("/");
       }
     };
 
     getUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+
+      if (session?.user) {
+        void applyAuthenticatedUser(session.user);
+      } else {
+        navigate("/");
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, [ensurePushNotifications, checkGoogleCalendarStatus, navigate]);
 
   useEffect(() => {
@@ -365,7 +436,7 @@ export default function HomePage() {
     return () => window.removeEventListener("notesync-theme-change", syncTheme);
   }, []);
 
-  const displayName = username || "Samarth";
+  const displayName = username || "User";
   const initial = displayName.charAt(0).toUpperCase();
   const notificationSummary = !notificationsState.supported
     ? "Not supported"
